@@ -16,3 +16,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::middleware('auth')->group(function(){
+    Route::get('/home', 'HomeController@index')->name('home');
+
+    Route::get('user/{user}', function($name = null){
+        return "Hasil Kuisioner ".$name;
+    });
+
+    Route::namespace('Master')->prefix('master')->name('master.')->group(function(){
+        Route::resource('wilayah', 'WilayahController');
+        Route::patch('tugas/{id}', 'NamaController@updateCheclist');
+        Route::get('/kategori', 'KategoriController@index')->name('kategori');
+    });
+
+    Route::get('kuesioner/create-step1', 'KuesionerController@createStep1')->name('kuesioner.createStep1');
+});
